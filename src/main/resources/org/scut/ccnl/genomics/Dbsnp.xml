@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.scut.ccnl.genomics.io.dbsnp.IDBsnpOperator">
+    <select id="selectDBsnpByPos" resultType="DBsnp">
+        select * from dbsnp_135_hg19 where pos = #{pos} and chrom = #{chr};
+    </select>
+
+    <insert id="addDBsnp" parameterType="DBsnp">
+        insert into dbsnp_135_hg19(chrom,pos,stop,id,ref,alt,qual,filter,info)
+        values(#{chrom},#{pos},#{stop},#{id},#{ref},#{alt},#{qual},#{filter},#{info})
+    </insert>
+
+    <select id="queryLoc" resultType="DBsnp">
+        select * from dbsnp_135_hg19 where pos &lt;= #{pos} and stop &gt;=#{pos} and chrom = #{chr};
+    </select>
+
+    <select id="queryByRange" resultType="DBsnp">
+        select * from dbsnp_135_hg19 where pos &gt;= #{start} and pos &lt;=#{stop} and chrom = #{chr};
+    </select>
+
+    <select id="existTable" resultType="Integer">
+        SELECT COUNT(1) FROM INFORMATION_SCHEMA.TABLES WHERE  TABLE_NAME='dbsnp_135_hg19' ;
+    </select>
+    
+    <select id="createDbsnpTable">
+        CREATE TABLE `dbsnp_135_hg19` (
+              `chrom` char(20) DEFAULT NULL,
+              `pos` int(11) DEFAULT NULL,
+              `stop` int(11) DEFAULT NULL,
+              `id` char(200) DEFAULT NULL,
+              `ref` varchar(2000) DEFAULT NULL,
+              `alt` varchar(2000) DEFAULT NULL,
+              `qual` char(20) DEFAULT NULL,
+              `filter` char(20) DEFAULT NULL,
+              `info` varchar(2000) DEFAULT NULL,
+              KEY `chrom` (`chrom`),
+              KEY `pos` (`pos`,`stop`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+    </select>
+
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.scut.ccnl.genomics.io.dbsnp.ImpalasnpOperator">
+
+    <select id="queryByRange" resultType="ImpalaDBsnp">
+        select chrom,pos,rs_id,ref,alt from ${tablename} where chrom = #{chr} and pos &gt;= #{start} and pos &lt;=#{stop};
+    </select>
+    <!--
+    select chrom,pos,rs_id,ref,alt from "+tablename+"
+    where chrom='"+loc.getContig()+"' and pos>="+start +" and pos<="+end-->
+
+
+</mapper>
